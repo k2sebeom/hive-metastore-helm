@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.postgresql.auth.existingSecret }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+type: Opaque
+data:
+  ADMIN_PASSWORD: {{ randAlphaNum 20 | b64enc }}
+  USER_PASSWORD: {{ randAlphaNum 20 | b64enc }}

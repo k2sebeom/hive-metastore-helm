@@ -1,0 +1,13 @@
+
+# Your Postgres is Ready.
+
+Get your password by
+
+$ POSTGRES_PASSWORD=$(kubectl get secret {{ .Values.postgresql.auth.existingSecret }} -n {{ .Release.Namespace }} -o jsonpath='{.data.USER_PASSWORD}' | base64 --decode)
+$ echo $POSTGRES_PASSWORD
+
+Now sign into your postgres db by
+
+$ kubectl exec -it {{ .Release.Name }}-postgresql-0 -c postgresql -n {{ .Release.Namespace }} -- psql -U {{ .Values.postgresql.auth.username }} -W -d {{ .Values.postgresql.auth.database }}
+
+Paste the password extracted by $POSTGRES_PASSWORD

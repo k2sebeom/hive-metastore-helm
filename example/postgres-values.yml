@@ -1,0 +1,20 @@
+auth:
+  username: hive
+  database: hivemetastore
+  existingSecret: postgres-auth
+  secretKeys:
+    adminPasswordKey: ADMIN_PASSWORD
+    userPasswordKey: USER_PASSWORD
+
+  primary:
+    persistence:
+      enabled: false
+      existingClaim: 'postgres-pvc'
+
+  readReplicas:
+    persistence:
+      enabled: false
+      existingClaim: 'postgres-pvc'
+
+  volumePermissions:
+    enabled: true

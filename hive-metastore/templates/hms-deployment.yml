@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.fullnameOverride }}
+spec:
+  replicas: {{ .Values.metastore.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fullnameOverride }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fullnameOverride }}
+    spec:
+      {{- if .Values.metastore.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.metastore.imagePullSecret }}
+      {{- end }}
+      containers:
+        - name: metastore
+          image: {{ .Values.metastore.image }}
+          env:
+            - name: SERVICE_NAME
+              value: "metastore"
+            - name: DB_DRIVER
+              value: {{ .Values.metastore.schema.dbType }}
+            - name: SKIP_SCHEMA_INIT
+              value: "true"
+          volumeMounts:
+            - name: hive-cfg
+              mountPath: /opt/hive/conf/hive-site.xml
+              subPath: hive-site.xml
+      volumes:
+        - name: hive-cfg
+          configMap:
+            name: {{ .Values.fullnameOverride }}-config

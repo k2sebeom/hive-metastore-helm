@@ -1,0 +1,20 @@
+services:
+  # Postgres
+  rdbms:
+    image: postgres:14-alpine
+    privileged: true
+    container_name: psql-db-backend
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=hive
+      - POSTGRES_PASSWORD=pswd
+      - POSTGRES_DB=postgres
+
+  hms:
+    build: .
+    container_name: hive
+    ports:
+      - '9083:9083'
+    environment:
+      - SERVICE_NAME=metastore
