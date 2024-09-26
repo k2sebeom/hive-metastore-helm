@@ -26,7 +26,7 @@ spec:
             - name: DB_DRIVER
               value: {{ .Values.metastore.schema.dbType }}
             - name: SKIP_SCHEMA_INIT
-              value: "true"
+              value: "TRUE"
           volumeMounts:
             - name: hive-cfg
               mountPath: /opt/hive/conf/hive-site.xml
